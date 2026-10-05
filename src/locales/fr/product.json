@@ -1,0 +1,63 @@
+{
+  "list": {
+    "title": "Catalogue",
+    "subtitle": "Jeux vidéo d'occasion",
+    "createButton": "Ajouter un jeu",
+    "search": "Rechercher un jeu",
+    "empty": "Aucun jeu dans le catalogue.",
+    "emptySearch": "Aucun jeu ne correspond à votre recherche.",
+    "count_one": "{{count}} jeu",
+    "count_other": "{{count}} jeux"
+  },
+  "columns": {
+    "name": "Jeu",
+    "category": "Plateforme",
+    "price": "Prix",
+    "stock": "Stock",
+    "createdAt": "Ajouté le",
+    "actions": "Actions"
+  },
+  "fields": {
+    "name": "Nom",
+    "description": "Description",
+    "price": "Prix",
+    "stock": "Stock",
+    "category": "Plateforme",
+    "categoryPlaceholder": "Choisir une plateforme"
+  },
+  "create": {
+    "title": "Ajouter un jeu",
+    "submit": "Ajouter",
+    "success": "Le jeu a été ajouté au catalogue.",
+    "error": "L'ajout a échoué."
+  },
+  "update": {
+    "title": "Modifier le jeu",
+    "submit": "Enregistrer",
+    "success": "Le jeu a été modifié.",
+    "error": "La modification a échoué."
+  },
+  "delete": {
+    "action": "Supprimer",
+    "title": "Supprimer ce jeu ?",
+    "description": "« {{name}} » sera définitivement retiré du catalogue.",
+    "confirm": "Supprimer",
+    "success": "Le jeu a été supprimé.",
+    "error": "La suppression a échoué."
+  },
+  "actions": {
+    "edit": "Modifier",
+    "cancel": "Annuler"
+  },
+  "errors": {
+    "loadTitle": "Le catalogue n'a pas pu être chargé",
+    "categoriesLoad": "Les plateformes n'ont pas pu être chargées. La liste déroulante est vide.",
+    "apiUnreachableHelp": "Démarrez l'API puis rechargez la page.",
+    "retry": "Réessayer"
+  },
+  "pagination": {
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page {{page}} sur {{total}}"
+  }
+}

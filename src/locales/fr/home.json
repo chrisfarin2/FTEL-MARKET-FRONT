@@ -1,0 +1,12 @@
+{
+  "tagline": "La place de marché du jeu vidéo d'occasion.",
+  "cta": "Voir le catalogue",
+  "wip": {
+    "title": "Work in progress",
+    "description": "Cette page s'étoffera au fil des TD."
+  },
+  "credit": {
+    "text": "Projet front basé sur le projet ",
+    "link": "start-ui-web de BearStudio"
+  }
+}

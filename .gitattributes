@@ -1,0 +1,79 @@
+# Normalisation des fins de ligne et de l'encodage
+#
+# Le depot melange du .NET (Windows, Visual Studio) et du Node/TypeScript.
+# Regle retenue : LF partout, dans le depot ET a la copie de travail.
+# .NET, Visual Studio, Rider et VS Code lisent le LF sans probleme, tandis que
+# Prettier et ESLint refusent le CRLF par defaut. Les seules exceptions sont
+# les fichiers que Windows ou Visual Studio reecrivent d'office en CRLF.
+
+* text=auto eol=lf
+
+# --- Fichiers imposant CRLF (reecrits par Windows ou Visual Studio) ---
+*.sln       text eol=crlf
+*.slnx      text eol=crlf
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+*.ps1       text eol=crlf
+
+# --- Sources .NET ---
+*.cs        text diff=csharp
+*.csproj    text
+*.props     text
+*.targets   text
+*.config    text
+*.http      text
+*.razor     text diff=html
+
+# --- Sources front ---
+*.ts        text
+*.tsx       text
+*.js        text
+*.jsx       text
+*.mjs       text
+*.cjs       text
+*.css       text
+*.scss      text
+*.html      text diff=html
+*.svg       text
+
+# --- Donnees et documentation ---
+*.json      text
+*.jsonc     text
+*.md        text diff=markdown
+*.yml       text
+*.yaml      text
+*.xml       text
+*.sql       text
+*.env       text
+*.editorconfig text
+Dockerfile  text
+*.sh        text eol=lf
+
+# --- Fichiers generes : exclus des diffs et des statistiques ---
+pnpm-lock.yaml    text -diff linguist-generated
+package-lock.json text -diff linguist-generated
+
+# --- Binaires : ni normalisation, ni diff textuel ---
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.webp      binary
+*.avif      binary
+*.woff      binary
+*.woff2     binary
+*.ttf       binary
+*.otf       binary
+*.eot       binary
+*.pdf       binary
+*.zip       binary
+*.gz        binary
+*.7z        binary
+*.dll       binary
+*.exe       binary
+*.pdb       binary
+*.snk       binary
+*.db        binary
+*.sqlite    binary
+*.sqlite3   binary
