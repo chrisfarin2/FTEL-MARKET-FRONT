@@ -40,6 +40,27 @@ VITE_API_BASE_URL=http://localhost:5082/api
 
 **Pagination.** La page produits envoie `?page=&pageSize=` à chaque appel. L'API du TP 1 les ignore volontairement et renvoie le catalogue complet : le front filtre et pagine alors en mémoire. Ces paramètres deviendront utiles dans un module ultérieur.
 
+## Image Docker
+
+Le front est aussi publié sur Docker Hub (image `ftelmarket-front`), pour être lancé sans installer Node ni pnpm. La procédure destinée aux étudiants est dans [`DOCKERHUB.md`](DOCKERHUB.md), qui sert de description à la page Docker Hub.
+
+Pour construire et lancer l'image depuis ces sources :
+
+```bash
+docker compose up -d --build   # http://localhost:3000
+```
+
+L'URL de l'API se règle **au lancement** via la variable `VITE_API_BASE_URL` du `docker-compose.yml`. Elle vaut `http://localhost:5082/api` par défaut, ce qui correspond au profil `http` de `dotnet run`.
+
+### Publier sur Docker Hub
+
+La publication passe par le workflow GitHub Actions **Publier l'image du front FTELMarket** (`.github/workflows/docker.yml`), à lancer à la main depuis l'onglet *Actions*. Il nécessite deux secrets dans le dépôt :
+
+| Secret               | Contenu                                     |
+| -------------------- | ------------------------------------------- |
+| `DOCKERHUB_USERNAME` | Nom d'utilisateur Docker Hub                |
+| `DOCKERHUB_TOKEN`    | Jeton d'accès Docker Hub (droits *Read & Write*) |
+
 ## Scripts
 
 | Commande         | Effet                                     |

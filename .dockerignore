@@ -1,46 +1,25 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-/public/storybook
-/storybook-static
-
-# misc
-.DS_Store
-*.pem
-/.vscode/*
-!/.vscode/extensions.json
+node_modules/
+.output/
+.nitro/
+.tanstack/
+.vinxi/
+dist/
+build/
+coverage/
+storybook-static/
+public/storybook/
+src/features/build-info/build-info.gen.json
+.git/
+.github/
+.claude/
+.vscode/
 .idea/
-.eslintcache
-.db
-.git
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# vercel
-.vercel
-
+.zed/
+.env
+.env.*
+*.log
 Dockerfile
 .dockerignore
+docker-compose.yml
+DOCKERHUB.md
 README.md

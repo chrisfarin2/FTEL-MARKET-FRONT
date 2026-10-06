@@ -1,0 +1,10 @@
+services:
+  ftelmarket-front:
+    build: .
+    image: ftelmarket-front
+    container_name: ftelmarket-front
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_BASE_URL: "http://localhost:5082/api"
+    restart: unless-stopped
