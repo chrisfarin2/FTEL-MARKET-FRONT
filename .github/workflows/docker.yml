@@ -64,6 +64,15 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Publier la description Docker Hub
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/ftelmarket-front
+          readme-filepath: ./DOCKERHUB.md
+          short-description: "Front fourni du projet fil rouge FTELMarket, à brancher sur votre API .NET"
+
       - name: Récapitulatif
         env:
           TAGS: ${{ steps.tags.outputs.tags }}

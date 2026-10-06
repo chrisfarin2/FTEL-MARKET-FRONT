@@ -4,6 +4,8 @@ Front web fourni du projet fil rouge **FTELMarket**. Il affiche et collecte les 
 
 Sources : [github.com/chrisfarin2/FTEL-MARKET-FRONT](https://github.com/chrisfarin2/FTEL-MARKET-FRONT)
 
+> **Cette image est la méthode conseillée pour lancer le front pendant les TP** : rien à installer à part Docker, pas de Node ni de pnpm. En cas de bug côté front, passez par les sources et lancez-le en local pour débugger (voir [Un souci pendant le TP ?](#un-souci-pendant-le-tp-)) : **l'IA est autorisée pour débugger le front !**
+
 ## Lancer le front
 
 Créez un fichier `docker-compose.yml` :
@@ -51,6 +53,29 @@ N'oubliez pas d'autoriser l'origine `http://localhost:3000` dans la configuratio
 
 ## Un souci pendant le TP ?
 
-Si le front se comporte bizarrement, vous pouvez le lancer directement sur votre machine depuis les sources pour le **débugger** : [github.com/chrisfarin2/FTEL-MARKET-FRONT](https://github.com/chrisfarin2/FTEL-MARKET-FRONT). Le `README` du dépôt explique comment l'installer et le démarrer.
+Si le front se comporte bizarrement, arrêtez le conteneur (`docker compose down`) et lancez le front directement sur votre machine depuis les sources pour le **débugger** : [github.com/chrisfarin2/FTEL-MARKET-FRONT](https://github.com/chrisfarin2/FTEL-MARKET-FRONT).
+
+Prérequis : Node.js 22 ou plus et pnpm.
+
+```bash
+git clone https://github.com/chrisfarin2/FTEL-MARKET-FRONT.git
+cd FTEL-MARKET-FRONT
+pnpm install
+```
+
+Créez un fichier `.env` à la racine du dépôt :
+
+```dotenv
+VITE_BASE_URL=http://localhost:3000
+VITE_API_BASE_URL=http://localhost:5082/api
+```
+
+Puis :
+
+```bash
+pnpm dev            # http://localhost:3000
+```
+
+Le `README` du dépôt détaille le reste (scripts, organisation du code).
 
 Si le problème vient du front, **l'IA est autorisée** pour vous aider à le débugger.
