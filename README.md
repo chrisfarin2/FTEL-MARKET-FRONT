@@ -4,7 +4,10 @@ Ce front est **fourni et déjà écrit**. Votre travail porte sur l'API : toute 
 
 Il n'embarque ni base de données, ni authentification, ni couche serveur : il appelle votre API par HTTP, et rien d'autre. Tant que celle-ci n'est pas démarrée, les écrans affichent une erreur explicite — c'est normal, et c'est votre point de départ.
 
-Base technique : [Start UI \[web\]](https://github.com/BearStudio/start-ui-web) de la 🐻 BearStudio Team, allégé de sa couche serveur.
+## Origine du code
+
+- **Starter** : ce projet repose sur [Start UI \[web\]](https://github.com/BearStudio/start-ui-web), le starter open source de la 🐻 [BearStudio Team](https://www.bearstudio.fr/), allégé de sa couche serveur. Le code d'origine reste la propriété de ses auteurs et est distribué sous sa licence (voir `LICENSE`).
+- **Rajouts** : tous les ajouts et modifications apportés par-dessus ce starter (écrans, features, client API, configuration spécifique à FTELMarket) ont été **générés par IA**.
 
 ## Démarrer
 
