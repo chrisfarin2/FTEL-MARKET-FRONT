@@ -9,16 +9,56 @@ Il n'embarque ni base de données, ni authentification, ni couche serveur : il a
 - **Starter** : ce projet repose sur [Start UI \[web\]](https://github.com/BearStudio/start-ui-web), le starter open source de la 🐻 [BearStudio Team](https://www.bearstudio.fr/), allégé de sa couche serveur. Le code d'origine reste la propriété de ses auteurs et est distribué sous sa licence (voir `LICENSE`).
 - **Rajouts** : tous les ajouts et modifications apportés par-dessus ce starter (écrans, features, client API, configuration spécifique à FTELMarket) ont été **générés par IA**.
 
-## Démarrer
+## Démarrer avec Docker
+
+C'est le mode de lancement recommandé : seul Docker est nécessaire, sans installer Node ni pnpm.
+
+```bash
+docker compose up -d        # http://localhost:3000
+docker compose logs -f      # suivre le démarrage
+```
+
+Le premier lancement installe les dépendances et prend quelques minutes. Les sources sont montées dans le conteneur : toute modification du code est rechargée à chaud.
+
+### Configuration
+
+L'URL de l'API se règle via la variable `VITE_API_BASE_URL` du `docker-compose.yml`. Elle vaut `http://localhost:5082/api` par défaut, ce qui correspond au profil `http` de `dotnet run`. Après modification, relancez avec `docker compose up -d`.
+
+`VITE_API_BASE_URL` est **le seul point de configuration** entre ce front et votre API. Tout le reste — les routes, les noms de champs, les codes HTTP — suit le contrat d'API qui vous est communiqué.
+
+> **Attention au port.** `dotnet run` démarre le profil `http` et n'écoute que sur `5082`. Le port HTTPS `7236` n'existe qu'avec `dotnet run --launch-profile https`, et exige en plus un certificat approuvé (`dotnet dev-certs https --trust`). Pointer le front sur un port qui n'écoute pas produit dans le navigateur une erreur trompeuse, présentée comme un problème de CORS alors que la connexion n'a simplement pas abouti.
+>
+> Si vous préférez HTTPS, lancez l'API avec le profil `https` et mettez `VITE_API_BASE_URL=https://localhost:7236/api`.
+
+### Bases de données
+
+Le compose contient aussi deux bases de données, au choix pour votre API. Elles sont commentées par défaut : décommentez le service voulu et son volume (en bas du fichier) dans le `docker-compose.yml`, puis relancez `docker compose up -d`.
+
+| Base       | Hôte et port     | Utilisateur  | Mot de passe      | Chaîne de connexion .NET                                                                              |
+| ---------- | ---------------- | ------------ | ----------------- | ----------------------------------------------------------------------------------------------------- |
+| SQL Server | `localhost:1433` | `sa`         | `FtelMarket#2026` | `Server=localhost,1433;Database=FtelMarket;User Id=sa;Password=FtelMarket#2026;TrustServerCertificate=True` |
+| PostgreSQL | `localhost:5432` | `ftelmarket` | `ftelmarket`      | `Host=localhost;Port=5432;Database=ftelmarket;Username=ftelmarket;Password=ftelmarket`                |
+
+### Arrêter
+
+Pour arrêter : `docker compose down`. Pour repartir de zéro (dépendances réinstallées et bases vidées) : `docker compose down -v`.
+
+## Deux points qui vous concernent côté API
+
+**CORS.** Le front tourne sur `http://localhost:3000`, votre API sur un autre port : le navigateur bloquera les appels tant que votre API n'autorise pas explicitement cette origine. C'est la première erreur que vous rencontrerez, et elle se règle dans votre API, pas ici.
+
+**Pagination.** La page produits envoie `?page=&pageSize=` à chaque appel. L'API du TP 1 les ignore volontairement et renvoie le catalogue complet : le front filtre et pagine alors en mémoire. Ces paramètres deviendront utiles dans un module ultérieur.
+
+## Lancer sans Docker (alternative)
+
+Si vous avez déjà Node 22+ et pnpm installés, vous pouvez lancer le front directement :
 
 ```bash
 pnpm install
 pnpm dev            # http://localhost:3000
 ```
 
-### Configuration
-
-Créez un fichier `.env` à la racine de `Client/` :
+Créez dans ce cas un fichier `.env` à la racine de `Client/` :
 
 ```dotenv
 # URL publique du front lui-même
@@ -28,41 +68,7 @@ VITE_BASE_URL=http://localhost:3000
 VITE_API_BASE_URL=http://localhost:5082/api
 ```
 
-`VITE_API_BASE_URL` est **le seul point de configuration** entre ce front et votre API. Tout le reste — les routes, les noms de champs, les codes HTTP — suit le contrat d'API qui vous est communiqué.
-
-> **Attention au port.** `dotnet run` démarre le profil `http` et n'écoute que sur `5082`. Le port HTTPS `7236` n'existe qu'avec `dotnet run --launch-profile https`, et exige en plus un certificat approuvé (`dotnet dev-certs https --trust`). Pointer le front sur un port qui n'écoute pas produit dans le navigateur une erreur trompeuse, présentée comme un problème de CORS alors que la connexion n'a simplement pas abouti.
->
-> Si vous préférez HTTPS, lancez l'API avec le profil `https` et mettez `VITE_API_BASE_URL=https://localhost:7236/api`.
-
-### Deux points qui vous concernent côté API
-
-**CORS.** Le front tourne sur `http://localhost:3000`, votre API sur un autre port : le navigateur bloquera les appels tant que votre API n'autorise pas explicitement cette origine. C'est la première erreur que vous rencontrerez, et elle se règle dans votre API, pas ici.
-
-**Pagination.** La page produits envoie `?page=&pageSize=` à chaque appel. L'API du TP 1 les ignore volontairement et renvoie le catalogue complet : le front filtre et pagine alors en mémoire. Ces paramètres deviendront utiles dans un module ultérieur.
-
-## Lancer avec Docker
-
-Pour lancer le front en mode développement sans installer Node ni pnpm, seul Docker est nécessaire :
-
-```bash
-docker compose up -d        # http://localhost:3000
-docker compose logs -f      # suivre le démarrage
-```
-
-Le premier lancement installe les dépendances et prend quelques minutes. Les sources sont montées dans le conteneur : toute modification du code est rechargée à chaud.
-
-L'URL de l'API se règle via la variable `VITE_API_BASE_URL` du `docker-compose.yml`. Elle vaut `http://localhost:5082/api` par défaut, ce qui correspond au profil `http` de `dotnet run`. Après modification, relancez avec `docker compose up -d`.
-
-Le compose contient aussi deux bases de données, au choix pour votre API. Elles sont commentées par défaut : décommentez le service voulu et son volume (en bas du fichier) dans le `docker-compose.yml`, puis relancez `docker compose up -d`.
-
-| Base       | Hôte et port     | Utilisateur  | Mot de passe      | Chaîne de connexion .NET                                                                              |
-| ---------- | ---------------- | ------------ | ----------------- | ----------------------------------------------------------------------------------------------------- |
-| SQL Server | `localhost:1433` | `sa`         | `FtelMarket#2026` | `Server=localhost,1433;Database=FtelMarket;User Id=sa;Password=FtelMarket#2026;TrustServerCertificate=True` |
-| PostgreSQL | `localhost:5432` | `ftelmarket` | `ftelmarket`      | `Host=localhost;Port=5432;Database=ftelmarket;Username=ftelmarket;Password=ftelmarket`                |
-
-Pour arrêter : `docker compose down`. Pour repartir de zéro (dépendances réinstallées et bases vidées) : `docker compose down -v`.
-
-## Scripts
+### Scripts
 
 | Commande         | Effet                                     |
 | ---------------- | ----------------------------------------- |
