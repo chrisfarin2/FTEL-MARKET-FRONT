@@ -4,13 +4,14 @@ import { toast } from 'sonner';
 
 import { isApiError } from '@/lib/api/errors';
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ApiRouteBadge } from '@/components/api-route-badge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ConfirmResponsiveDrawer } from '@/components/ui/confirm-responsive-drawer';
 import { SearchInput } from '@/components/ui/search-input';
 import { Spinner } from '@/components/ui/spinner';
 
+import { useCategories } from '@/features/category/api';
 import {
   PageLayout,
   PageLayoutContent,
@@ -18,7 +19,8 @@ import {
   PageLayoutTopBarTitle,
 } from '@/layout/app/page-layout';
 
-import { useDeleteProduct, useProducts } from './api';
+import { useDeleteProduct, useLastMutation, useProducts } from './api';
+import { API_ROUTES, MOCK_PRODUCTS } from './api-contract';
 import { ProductFormDialog } from './product-form-dialog';
 import type { Product } from './schemas';
 
@@ -44,13 +46,17 @@ export const PageProducts = () => {
 
   const products = useProducts({ page, pageSize: PAGE_SIZE });
   const deleteProduct = useDeleteProduct();
+  const categories = useCategories();
+  const lastCreate = useLastMutation('create');
+  const lastUpdate = useLastMutation('update');
+  const lastDelete = useLastMutation('delete');
 
   // L'API du TP 1 ignore `page` et `pageSize` et renvoie tout le catalogue :
   // la recherche et la pagination sont donc calculees ici, sur ce qu'elle a
   // renvoye. Le module « Performance & donnees » deplacera ce travail cote
   // serveur.
   const filtered = useMemo(() => {
-    const items = products.data ?? [];
+    const items = products.isError ? MOCK_PRODUCTS : (products.data ?? []);
     const needle = search.trim().toLowerCase();
 
     if (!needle) return items;
@@ -60,7 +66,7 @@ export const PageProducts = () => {
         product.name.toLowerCase().includes(needle) ||
         product.categoryName.toLowerCase().includes(needle)
     );
-  }, [products.data, search]);
+  }, [products.isError, products.data, search]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, pageCount);
@@ -103,6 +109,34 @@ export const PageProducts = () => {
 
       <PageLayoutContent>
         <div className="flex flex-col gap-4">
+          <div className="flex flex-wrap gap-2">
+            <ApiRouteBadge
+              route={API_ROUTES.listProducts}
+              isValidated={products.isSuccess}
+              error={products.error}
+            />
+            <ApiRouteBadge
+              route={API_ROUTES.listCategories}
+              isValidated={categories.isSuccess}
+              error={categories.error}
+            />
+            <ApiRouteBadge
+              route={API_ROUTES.createProduct}
+              isValidated={lastCreate?.status === 'success'}
+              error={lastCreate?.error}
+            />
+            <ApiRouteBadge
+              route={API_ROUTES.updateProduct}
+              isValidated={lastUpdate?.status === 'success'}
+              error={lastUpdate?.error}
+            />
+            <ApiRouteBadge
+              route={API_ROUTES.deleteProduct}
+              isValidated={lastDelete?.status === 'success'}
+              error={lastDelete?.error}
+            />
+          </div>
+
           <SearchInput
             value={search}
             onChange={(value) => {
@@ -118,34 +152,13 @@ export const PageProducts = () => {
             </div>
           )}
 
-          {products.isError && (
-            <Alert variant="destructive">
-              <AlertTitle>{t('product:errors.loadTitle')}</AlertTitle>
-              <AlertDescription>
-                <p>
-                  {isApiError(products.error)
-                    ? products.error.message
-                    : t('product:errors.loadTitle')}
-                </p>
-                <p>{t('product:errors.apiUnreachableHelp')}</p>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => products.refetch()}
-                >
-                  {t('product:errors.retry')}
-                </Button>
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {products.isSuccess && visible.length === 0 && (
+          {!products.isPending && visible.length === 0 && (
             <p className="py-12 text-center text-sm text-muted-foreground">
               {search ? t('product:list.emptySearch') : t('product:list.empty')}
             </p>
           )}
 
-          {products.isSuccess && visible.length > 0 && (
+          {!products.isPending && visible.length > 0 && (
             <>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">

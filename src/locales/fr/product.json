@@ -49,15 +49,30 @@
     "edit": "Modifier",
     "cancel": "Annuler"
   },
-  "errors": {
-    "loadTitle": "Le catalogue n'a pas pu être chargé",
-    "categoriesLoad": "Les plateformes n'ont pas pu être chargées. La liste déroulante est vide.",
-    "apiUnreachableHelp": "Démarrez l'API puis rechargez la page.",
-    "retry": "Réessayer"
-  },
   "pagination": {
     "previous": "Précédent",
     "next": "Suivant",
     "page": "Page {{page}} sur {{total}}"
+  },
+  "apiContract": {
+    "toCreate": "Route à créer",
+    "validated": "Route validée",
+    "url": "URL à exposer",
+    "receivedError": "Erreur reçue",
+    "noError": "Aucune erreur reçue pour l'instant",
+    "expectedBody": "Corps attendu",
+    "expectedResponse": "Réponse attendue",
+    "noContent": "204 No Content, sans corps de réponse",
+    "constraints": "Contraintes du corps",
+    "constraintField": "Champ",
+    "constraintType": "Type",
+    "constraintRequired": "Requis",
+    "constraintRules": "Règles",
+    "yes": "Oui",
+    "no": "Non",
+    "minLength": "{{value}} caractères min.",
+    "maxLength": "{{value}} caractères max.",
+    "minimum": "≥ {{value}}",
+    "maximum": "≤ {{value}}"
   }
 }

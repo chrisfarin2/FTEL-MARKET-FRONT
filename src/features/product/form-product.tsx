@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import {
   FormField,
   FormFieldController,
-  FormFieldHelper,
   FormFieldLabel,
 } from '@/components/form';
 
 import { useCategories } from '@/features/category/api';
 
+import { MOCK_CATEGORIES } from './api-contract';
 import type { ProductPayload } from './schemas';
 
 export const FormProduct = () => {
@@ -36,16 +36,14 @@ export const FormProduct = () => {
           control={form.control}
           name="categoryId"
           placeholder={t('product:fields.categoryPlaceholder')}
-          items={(categories.data ?? []).map((category) => ({
+          items={(categories.isError
+            ? MOCK_CATEGORIES
+            : (categories.data ?? [])
+          ).map((category) => ({
             value: category.id,
             label: category.name,
           }))}
         />
-        {categories.isError && (
-          <FormFieldHelper>
-            {t('product:errors.categoriesLoad')}
-          </FormFieldHelper>
-        )}
       </FormField>
 
       <div className="flex flex-col gap-4 sm:flex-row">

@@ -28,9 +28,10 @@ const buildUrl = (
 /**
  * Appelle l'API FTELMarket et rejette une `ApiError` en cas d'echec.
  *
- * Aucun mock, aucune donnee de repli : tant que l'API n'est pas demarree, les
- * ecrans affichent une erreur explicite. C'est voulu — ce front est le cahier
- * des charges executable de l'API a ecrire.
+ * Le client ne simule rien : tant qu'une route n'existe pas, il rejette une
+ * erreur, et ce sont les ecrans qui se replient sur les donnees mockees de
+ * `api-contract.ts` en signalant la route a creer. Ce front reste le cahier des
+ * charges executable de l'API a ecrire.
  */
 export const apiFetch = async <TResponse>(
   path: string,

@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useMutationState,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 import { apiFetch } from '@/lib/api/client';
 
@@ -37,6 +42,8 @@ export const useCreateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: [...PRODUCTS_QUERY_KEY, 'create'],
+    gcTime: Infinity,
     mutationFn: (payload: ProductPayload) =>
       apiFetch<Product>('/products', { method: 'POST', body: payload }),
     onSuccess: () =>
@@ -48,6 +55,8 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: [...PRODUCTS_QUERY_KEY, 'update'],
+    gcTime: Infinity,
     // PUT est un remplacement complet : tous les champs sont exiges.
     mutationFn: ({ id, ...payload }: ProductPayload & { id: number }) =>
       apiFetch<Product>(`/products/${id}`, { method: 'PUT', body: payload }),
@@ -60,9 +69,20 @@ export const useDeleteProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: [...PRODUCTS_QUERY_KEY, 'delete'],
+    gcTime: Infinity,
     mutationFn: (id: number) =>
       apiFetch<void>(`/products/${id}`, { method: 'DELETE' }),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY }),
   });
 };
+
+export const useLastMutation = (action: 'create' | 'update' | 'delete') =>
+  useMutationState({
+    filters: { mutationKey: [...PRODUCTS_QUERY_KEY, action] },
+    select: (mutation) => ({
+      status: mutation.state.status,
+      error: mutation.state.error,
+    }),
+  }).at(-1);
