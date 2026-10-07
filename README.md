@@ -53,7 +53,14 @@ Le premier lancement installe les dépendances et prend quelques minutes. Les so
 
 L'URL de l'API se règle via la variable `VITE_API_BASE_URL` du `docker-compose.yml`. Elle vaut `http://localhost:5082/api` par défaut, ce qui correspond au profil `http` de `dotnet run`. Après modification, relancez avec `docker compose up -d`.
 
-Pour arrêter : `docker compose down`. Pour repartir de zéro (dépendances réinstallées) : `docker compose down -v`.
+Le compose contient aussi deux bases de données, au choix pour votre API. Elles sont commentées par défaut : décommentez le service voulu et son volume (en bas du fichier) dans le `docker-compose.yml`, puis relancez `docker compose up -d`.
+
+| Base       | Hôte et port     | Utilisateur  | Mot de passe      | Chaîne de connexion .NET                                                                              |
+| ---------- | ---------------- | ------------ | ----------------- | ----------------------------------------------------------------------------------------------------- |
+| SQL Server | `localhost:1433` | `sa`         | `FtelMarket#2026` | `Server=localhost,1433;Database=FtelMarket;User Id=sa;Password=FtelMarket#2026;TrustServerCertificate=True` |
+| PostgreSQL | `localhost:5432` | `ftelmarket` | `ftelmarket`      | `Host=localhost;Port=5432;Database=ftelmarket;Username=ftelmarket;Password=ftelmarket`                |
+
+Pour arrêter : `docker compose down`. Pour repartir de zéro (dépendances réinstallées et bases vidées) : `docker compose down -v`.
 
 ## Scripts
 
