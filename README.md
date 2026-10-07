@@ -47,8 +47,6 @@ Pour arrêter : `docker compose down`. Pour repartir de zéro (dépendances réi
 
 **CORS.** Le front tourne sur `http://localhost:3000`, votre API sur un autre port : le navigateur bloquera les appels tant que votre API n'autorise pas explicitement cette origine. C'est la première erreur que vous rencontrerez, et elle se règle dans votre API, pas ici.
 
-**Pagination.** La page produits envoie `?page=&pageSize=` à chaque appel. L'API du TP 1 les ignore volontairement et renvoie le catalogue complet : le front filtre et pagine alors en mémoire. Ces paramètres deviendront utiles dans un module ultérieur.
-
 ## Lancer sans Docker (alternative)
 
 Si vous avez déjà Node 22+ et pnpm installés, vous pouvez lancer le front directement :
@@ -78,12 +76,3 @@ VITE_API_BASE_URL=http://localhost:5082/api
 | `pnpm lint`      | Typecheck TypeScript + oxlint             |
 | `pnpm format`    | Formatage du code                         |
 
-## Où regarder
-
-| Chemin                    | Rôle                                                       |
-| ------------------------- | ---------------------------------------------------------- |
-| `src/lib/api/client.ts`   | Appels HTTP vers l'API                                     |
-| `src/lib/api/errors.ts`   | Normalisation des deux formats d'erreur renvoyés par l'API |
-| `src/features/product/`   | Écran produits : liste, formulaire, schémas, hooks         |
-| `src/features/category/`  | Chargement des catégories                                  |
-| `src/routes/produits.tsx` | La route                                                   |
